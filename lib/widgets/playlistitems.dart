@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 import 'package:musicuitest/globalpage.dart';
+import 'package:musicuitest/homepage.dart';
+import 'package:musicuitest/screens/navigatorpage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../models/playlistnamearray.dart';
@@ -36,7 +38,6 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
     }); // Trigger a rebuild after initializing the playlist
   }
 
-  
   readplaylistDB() async {
     var box = await Hive.openBox<Playlistarray>('playlistsarray');
     var playlistArray = box.get(widget.playlistName);
@@ -80,6 +81,16 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
             Navigator.of(context).pop(); // Navigate back to the previous screen
           },
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                _openBottomSheet(context);
+              },
+              icon: const Icon(
+                Icons.playlist_add,
+                color: Colors.amber,
+              ))
+        ],
       ),
       //body: const ListViewPage(),
       body: Container(
@@ -189,4 +200,21 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
       ),
     );
   }
+}
+
+void _openBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return const HomePage();
+    },
+  ).then((value) {
+    // Navigates to the home page when the bottom sheet is closed
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const NavigatorPage(),
+      ),
+    );
+  });
 }
