@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SettingsPage extends StatefulWidget {
-   const SettingsPage({super.key});
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -12,12 +13,15 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         shadowColor: const Color.fromARGB(255, 27, 164, 179),
         elevation: 10,
         backgroundColor: Colors.black,
-        title: const Text(
-          "Settings",
-          style: TextStyle(color: Color.fromARGB(255, 27, 164, 179),),
+        title: Text(
+          'Settings',
+          style: GoogleFonts.acme(
+            textStyle: const TextStyle(fontSize: 22),
+          ),
         ),
       ),
       body: Center(
@@ -55,7 +59,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(
+                height: 30,
+              ),
               GestureDetector(
                 onTap: () {
                   showDialog(
@@ -86,7 +92,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(
+                height: 30,
+              ),
               GestureDetector(
                 onTap: () {
                   showDialog(
@@ -117,7 +125,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(
+                height: 30,
+              ),
               GestureDetector(
                 onTap: () {
                   showDialog(
@@ -148,7 +158,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(
+                height: 30,
+              ),
             ],
           ),
         ),
@@ -156,4 +168,3 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
-

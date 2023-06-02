@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musicuitest/widgets/listview.dart';
-import 'package:musicuitest/widgets/recent.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 class RecentPage extends StatefulWidget {
   const RecentPage({super.key});
 
@@ -17,9 +15,15 @@ class _RecentPageState extends State<RecentPage> {
         shadowColor: const Color.fromARGB(255, 27, 164, 179),
         elevation: 10,
         backgroundColor: Colors.black,
-        title: const Text("Recent Songs",style: TextStyle(color: Color.fromARGB(255, 27, 164, 179),),),       
+        automaticallyImplyLeading: false,
+        title: Text(
+              'Recent Songs',
+              style: GoogleFonts.acme(
+                textStyle: const TextStyle(fontSize: 22),
+              ),
+            ),
       ),
-      body: const RecentPageDisplay(),
+      body: Container(),
     );
   }
 }

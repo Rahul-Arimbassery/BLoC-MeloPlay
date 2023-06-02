@@ -8,6 +8,7 @@ import 'package:musicuitest/widgets/playlistitems.dart';
 
 import '../models/playlist.dart';
 import '../models/playlistnamearray.dart';
+import '../widgets/addtoplaylist.dart';
 
 List<int> indexesPlaylist = [];
 
@@ -114,6 +115,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
           setState(() {
             indexesPlaylist.add(playlistIndex);
             playlistNames.add(playlistNames[index]);
+            press[index] = false;
+            //press[index] = !press[index];
           });
 
           Fluttertoast.showToast(
@@ -140,7 +143,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
         } else {
           Fluttertoast.showToast(
             msg: 'Song is already in the playlist!',
-            backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+            backgroundColor: const Color.fromARGB(255, 138, 11, 11),
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
           );
@@ -273,7 +276,13 @@ class _PlaylistPageState extends State<PlaylistPage> {
         title: Expanded(
           child: Row(
             children: [
-              const Text('PLAYLIST'),
+              //const Text('PLAYLIST'),
+              Text(
+                'Playlist     ',
+                style: GoogleFonts.acme(
+                  textStyle: const TextStyle(fontSize: 22),
+                ),
+              ),
               const SizedBox(width: 90),
               const Text(
                 'CREATE\nYour list',

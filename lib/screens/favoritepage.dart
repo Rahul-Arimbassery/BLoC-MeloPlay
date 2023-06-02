@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:musicuitest/globalpage.dart';
 import 'package:musicuitest/homepage.dart';
@@ -41,10 +42,10 @@ class _FavoritePageState extends State<FavoritePage> {
         elevation: 10,
         backgroundColor: Colors.black,
         automaticallyImplyLeading: false,
-        title: const Text(
-          "Favorite Songs",
-          style: TextStyle(
-            color: Color.fromARGB(255, 27, 164, 179),
+        title: Text(
+          'Favorite Songs',
+          style: GoogleFonts.acme(
+            textStyle: const TextStyle(fontSize: 22),
           ),
         ),
       ),
@@ -58,91 +59,101 @@ class _FavoritePageState extends State<FavoritePage> {
           center: Alignment.topLeft,
           radius: 1.2,
         )),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: ListView.separated(
-            itemCount: indexes.length,
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(
-                height:
-                    4, // set the desired height of the space between each ListTile
-              );
-            },
-            itemBuilder: (context, index) {
-              int currentindex = indexes[index];
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(
-                    25.0), // set the desired border radius value
-                child: Card(
-                  color: const Color.fromARGB(255, 190, 188, 188),
-                  elevation: 3.0,
-                  shadowColor: const Color.fromARGB(255, 188, 184, 184),
-                  child: SizedBox(
-                    height: 70.0, // set the desired height of the Card
-                    width: double
-                        .infinity, // set the width to match the parent ListView
-                    child: InkWell(
-                      onTap: () {
-                        //_audioPlayer.stop();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NowPlaying(
-                              index: currentindex,
-                            ),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        leading: QueryArtworkWidget(
-                          controller: _audioQuery,
-                          id: ids[currentindex],
-                          type: ArtworkType.AUDIO,
-                          nullArtworkWidget: const Icon(
-                            Icons.music_note,
-                            color: Colors.amber,
-                            size: 50,
-                          ),
-                        ),
-                        title: Text(
-                          songNames[currentindex],
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        subtitle: Text(
-                          artistNames[currentindex]!,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        tileColor: const Color.fromARGB(255, 250, 250, 251),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  indexes.remove(currentindex);
-                                });
-                                deleteSongFromFavorite(currentindex);
-                                Fluttertoast.showToast(
-                                  msg: 'Song Removed from Favorites',
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 27, 164, 179),
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.delete_outline_rounded,
-                                color: Color.fromARGB(255, 27, 164, 179),
-                              ),
-                            ),
-                          ],
-                        ), // set the background color based on the view mode
-                      ),
-                    ),
+        child: indexes.isEmpty
+            ? Center(
+                child: Text(
+                  'No Favorite Songs !!',
+                  style: GoogleFonts.acme(
+                    textStyle: const TextStyle(fontSize: 22),
                   ),
                 ),
-              );
-            },
-          ),
-        ),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: ListView.separated(
+                  itemCount: indexes.length,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const SizedBox(
+                      height:
+                          4, // set the desired height of the space between each ListTile
+                    );
+                  },
+                  itemBuilder: (context, index) {
+                    int currentindex = indexes[index];
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          25.0), // set the desired border radius value
+                      child: Card(
+                        color: const Color.fromARGB(255, 190, 188, 188),
+                        elevation: 3.0,
+                        shadowColor: const Color.fromARGB(255, 188, 184, 184),
+                        child: SizedBox(
+                          height: 70.0, // set the desired height of the Card
+                          width: double
+                              .infinity, // set the width to match the parent ListView
+                          child: InkWell(
+                            onTap: () {
+                              //_audioPlayer.stop();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NowPlaying(
+                                    index: currentindex,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: ListTile(
+                              leading: QueryArtworkWidget(
+                                controller: _audioQuery,
+                                id: ids[currentindex],
+                                type: ArtworkType.AUDIO,
+                                nullArtworkWidget: const Icon(
+                                  Icons.music_note,
+                                  color: Colors.amber,
+                                  size: 50,
+                                ),
+                              ),
+                              title: Text(
+                                songNames[currentindex],
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              subtitle: Text(
+                                artistNames[currentindex]!,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              tileColor:
+                                  const Color.fromARGB(255, 250, 250, 251),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        indexes.remove(currentindex);
+                                      });
+                                      deleteSongFromFavorite(currentindex);
+                                      Fluttertoast.showToast(
+                                        msg: 'Song Removed from Favorites',
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 27, 164, 179),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete_outline_rounded,
+                                      color: Color.fromARGB(255, 27, 164, 179),
+                                    ),
+                                  ),
+                                ],
+                              ), // set the background color based on the view mode
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
       ),
     );
   }

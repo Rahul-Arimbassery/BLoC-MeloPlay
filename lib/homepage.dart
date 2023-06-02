@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:musicuitest/globalpage.dart';
 import 'package:musicuitest/screens/nowplaying.dart';
 import 'package:musicuitest/screens/playlistpage.dart';
+import 'package:musicuitest/widgets/addtoplaylist.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'models/allsongs.dart';
-import 'package:shared_preferences/shared_preferences.dart';         
+import 'package:shared_preferences/shared_preferences.dart';
 
 late List<bool> _isPressedList;
 int playlistIndex = 0;
@@ -23,7 +25,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   bool _hasPermission = false;
   bool _isGrid = false; // new variable to keep track of the view mode
   Future<List<SongModel>>? _futureResult;
@@ -71,10 +72,10 @@ class _HomePageState extends State<HomePage> {
         automaticallyImplyLeading: false,
         title: Row(
           children: [
-            const Text(
+            Text(
               'All Songs',
-              style: TextStyle(
-                color: Color.fromARGB(255, 27, 164, 179),
+              style: GoogleFonts.acme(
+                textStyle: const TextStyle(fontSize: 22),
               ),
             ),
             const SizedBox(
@@ -256,7 +257,7 @@ class _HomePageState extends State<HomePage> {
                                       setState(() {
                                         _isPressedList[index] =
                                             !_isPressedList[index];
-                                        //count = 1;
+                                        press[index] = true;
                                       });
                                       if (_isPressedList[index]) {
                                         //addtoFavoritedb(index);

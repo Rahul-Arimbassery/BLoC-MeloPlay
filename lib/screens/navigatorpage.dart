@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:musicuitest/homepage.dart';
 import 'package:musicuitest/screens/favoritepage.dart';
 import 'package:musicuitest/screens/mostplayed.dart';
@@ -53,14 +54,21 @@ class _NavigatorPageState extends State<NavigatorPage> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
                     'MeloPlay',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(fontSize: 22,),
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
+                  // Text(
+                  //   'MeloPlay',
+                  //   style: TextStyle(
+                  //       fontSize: 18,
+                  //       color: Colors.black,
+                  //       fontWeight: FontWeight.bold),
+                  // ),
                 ),
               ),
             ),

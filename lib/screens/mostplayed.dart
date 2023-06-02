@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musicuitest/widgets/recent.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MostPlayedPage extends StatefulWidget {
   const MostPlayedPage({super.key});
@@ -16,9 +16,15 @@ class _MostPlayedPageState extends State<MostPlayedPage> {
         shadowColor: const Color.fromARGB(255, 27, 164, 179),
         elevation: 10,
         backgroundColor: Colors.black,
-        title: const Text("Most Played",style: TextStyle(color: Color.fromARGB(255, 27, 164, 179),),),
+        automaticallyImplyLeading: false,
+        title: Text(
+              'Most Played',
+              style: GoogleFonts.acme(
+                textStyle: const TextStyle(fontSize: 22),
+              ),
+            ),
       ),
-      body: const RecentPageDisplay(),
+      body: Container(),
     );
   }
 }

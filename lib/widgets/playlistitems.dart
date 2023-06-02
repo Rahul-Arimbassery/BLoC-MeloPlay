@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:musicuitest/globalpage.dart';
 import 'package:musicuitest/homepage.dart';
 import 'package:musicuitest/screens/navigatorpage.dart';
+import 'package:musicuitest/widgets/addtoplaylist.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../models/playlistnamearray.dart';
@@ -11,6 +13,9 @@ import '../screens/nowplaying.dart';
 import '../screens/playlistpage.dart';
 
 final OnAudioQuery _audioQuery = OnAudioQuery();
+List<int> currentIndexarray = [];
+
+late String globalplaylistName;
 
 class PlaylistDetailPage extends StatefulWidget {
   final String playlistName;
@@ -22,13 +27,12 @@ class PlaylistDetailPage extends StatefulWidget {
 }
 
 class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
-  List<int> currentIndexarray = [];
+  //List<int> currentIndexarray = [];
   int count = 0;
 
   @override
   void initState() {
     super.initState();
-
     initializePlaylist();
   }
 
@@ -39,6 +43,7 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
   }
 
   readplaylistDB() async {
+    globalplaylistName = widget.playlistName;
     var box = await Hive.openBox<Playlistarray>('playlistsarray');
     var playlistArray = box.get(widget.playlistName);
     if (playlistArray != null) {
@@ -70,7 +75,13 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.playlistName),
+        title: Text(
+          widget.playlistName,
+          style: GoogleFonts.acme(
+            textStyle: const TextStyle(fontSize: 22),
+          ),
+        ),
+        //Text(widget.playlistName),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -84,7 +95,19 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
         actions: [
           IconButton(
               onPressed: () {
-                _openBottomSheet(context);
+                //await updatePlaylistDB();
+                //_openBottomSheet(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddtoPlaylist(),
+                  ),
+                ).then((value) {
+                  // This code will run when you navigate back from AddtoPlaylist page
+                  setState(() {
+                    readplaylistDB(); // Perform any necessary actions or updates on the returned page
+                  });
+                });
               },
               icon: const Icon(
                 Icons.playlist_add,
@@ -155,6 +178,11 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
                                 controller: _audioQuery,
                                 id: ids[currentindex],
                                 type: ArtworkType.AUDIO,
+                                nullArtworkWidget: const Icon(
+                                  Icons.music_note,
+                                  color: Colors.amber,
+                                  size: 50,
+                                ),
                               ),
                               title: Text(
                                 songNames[currentindex],
@@ -174,7 +202,8 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
                                       setState(() {
                                         indexesPlaylist.remove(currentindex);
                                         currentIndexarray.remove(currentindex);
-                                        updatePlaylistDB();
+                                        press[currentindex] = false;
+                                        //updatePlaylistDB();
                                       });
                                       Fluttertoast.showToast(
                                         msg: 'Song Removed from Playlist',
@@ -200,21 +229,4 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
       ),
     );
   }
-}
-
-void _openBottomSheet(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    builder: (BuildContext context) {
-      return const HomePage();
-    },
-  ).then((value) {
-    // Navigates to the home page when the bottom sheet is closed
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const NavigatorPage(),
-      ),
-    );
-  });
 }
