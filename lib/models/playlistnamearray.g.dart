@@ -18,7 +18,7 @@ class PlaylistarrayAdapter extends TypeAdapter<Playlistarray> {
     };
     return Playlistarray(
       playlistName: fields[1] as String,
-      playlistIndexarray: (fields[2] as List).cast<int>(),
+      playlistIndexarray: (fields[2] as List?)?.cast<int>(),
     );
   }
 

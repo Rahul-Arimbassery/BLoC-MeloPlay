@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:musicuitest/globalpage.dart';
-import 'package:musicuitest/homepage.dart';
 import 'package:musicuitest/screens/navigatorpage.dart';
-import 'package:musicuitest/screens/playlistpage.dart';
+import 'package:musicuitest/screens/recentpage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 AssetsAudioPlayer _audioPlayer = AssetsAudioPlayer();
 bool isPlaying = false;
 late int index1;
 final OnAudioQuery _audioQuery = OnAudioQuery();
+List<int> recentArray = [];
 
 void playMusic1() {
   if (isPlaying) {
@@ -23,6 +22,14 @@ void playMusic1() {
 }
 
 void skipNext1() async {
+  if (!recentArray.contains(index1 + 1)) {
+    if (recentArray.length >= 5) {
+      recentArray.removeLast(); // Remove the oldest item
+    }
+    recentArray.insert(0, index1 + 1); // Add the new item at index 0
+    await saveRecentArray();
+  }
+
   _audioPlayer.stop();
   await _audioPlayer.open(
     Audio.file(allfilePaths[index1 + 1]),
@@ -34,6 +41,13 @@ void skipNext1() async {
 
 void skipPrevious1() async {
   index1--;
+  if (!recentArray.contains(index1)) {
+    if (recentArray.length >= 5) {
+      recentArray.removeLast(); // Remove the oldest item
+    }
+    recentArray.insert(0, index1); // Add the new item at index 0
+    await saveRecentArray();
+  }
   songNameindex = index1;
   _audioPlayer.stop();
   await _audioPlayer.open(
@@ -533,6 +547,18 @@ class _NowPlayingState extends State<NowPlaying> {
   }
 
   void openMusic() async {
+    // if (!recentArray.contains(widget.index)) {
+    //   recentArray.add(widget.index);
+    // }
+
+    if (!recentArray.contains(widget.index)) {
+      if (recentArray.length >= 5) {
+        recentArray.removeLast(); // Remove the oldest item
+      }
+      recentArray.insert(0, widget.index); // Add the new item at index 0
+      await saveRecentArray();
+    }
+
     currentindex = widget.index;
     String filePath = allfilePaths[currentindex];
     await _audioPlayer.open(

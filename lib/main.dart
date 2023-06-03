@@ -24,7 +24,7 @@ void main(List<String> args) async {
 
   await Hive.openBox<Playlist>('playlists');
 
-    // Check if PlaylistarrayAdapter is registered
+  // Check if PlaylistarrayAdapter is registered
   if (!Hive.isAdapterRegistered(PlaylistarrayAdapter().typeId)) {
     Hive.registerAdapter(PlaylistarrayAdapter());
   }

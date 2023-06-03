@@ -10,10 +10,12 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'models/allsongs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 late List<bool> _isPressedList;
 int playlistIndex = 0;
 final OnAudioQuery _audioQuery = OnAudioQuery();
 SharedPreferences? _prefs;
+List<int> recentList = [];
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -79,7 +81,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(
-              width: 140,
+              width: 130,
             ),
             IconButton(
               icon: const Icon(Icons.search),
@@ -217,8 +219,8 @@ class _HomePageState extends State<HomePage> {
                           width: double
                               .infinity, // set the width to match the parent ListView
                           child: InkWell(
-                            onTap: () {
-                              //_audioPlayer.stop();
+                            onTap: () async {
+                              //recentList.add(index);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -227,6 +229,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               );
+                              //await addtoRecent(index);
                             },
                             child: ListTile(
                               leading: QueryArtworkWidget(
@@ -513,3 +516,9 @@ Future<void> deleteSongFromFavorite(int songID) async {
     }
   }
 }
+
+// addtoRecent(int index) async {
+//   //recentList.add(index);
+//   var recent = await Hive.openBox<Recentsongs>('recent');
+//   recent.add(Recentsongs(songIndex: index));
+// }

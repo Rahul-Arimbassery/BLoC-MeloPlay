@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:marquee/marquee.dart';
 import 'package:musicuitest/homepage.dart';
 import 'package:musicuitest/screens/favoritepage.dart';
 import 'package:musicuitest/screens/mostplayed.dart';
@@ -7,12 +8,14 @@ import 'package:musicuitest/screens/nowplaying.dart';
 import 'package:musicuitest/screens/playlistpage.dart';
 import 'package:musicuitest/screens/recentpage.dart';
 import 'package:musicuitest/screens/settingpage.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 import '../globalpage.dart';
 
 bool miniPlayerindex = false;
 int songNameindex = 0;
 bool pagestatus = false;
+final OnAudioQuery _audioQuery = OnAudioQuery();
 
 class NavigatorPage extends StatefulWidget {
   const NavigatorPage({Key? key}) : super(key: key);
@@ -58,17 +61,11 @@ class _NavigatorPageState extends State<NavigatorPage> {
                   child: Text(
                     'MeloPlay',
                     style: GoogleFonts.acme(
-                      textStyle: const TextStyle(fontSize: 22,),
-                      fontWeight: FontWeight.bold
-                    ),
+                        textStyle: const TextStyle(
+                          fontSize: 22,
+                        ),
+                        fontWeight: FontWeight.bold),
                   ),
-                  // Text(
-                  //   'MeloPlay',
-                  //   style: TextStyle(
-                  //       fontSize: 18,
-                  //       color: Colors.black,
-                  //       fontWeight: FontWeight.bold),
-                  // ),
                 ),
               ),
             ),
@@ -81,10 +78,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
                 height: 55,
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 5, 5, 5),
-                  //color: Color.fromARGB(255, 84, 120, 117),
                   borderRadius: BorderRadius.only(
-                    //bottomLeft: Radius.circular(30),
-                    //bottomRight: Radius.circular(35),
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
@@ -128,12 +122,17 @@ class _NavigatorPageState extends State<NavigatorPage> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      //padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(
+                        left: 15.0,
+                        top: 10,
+                        bottom: 6,
+                        right: 3,
+                      ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const SizedBox(
-                            width: 20,
+                            width: 10,
                           ),
                           !showMiniPlayer
                               ? const Text(
@@ -142,20 +141,48 @@ class _NavigatorPageState extends State<NavigatorPage> {
                                     fontSize: 8,
                                     color: Colors.white,
                                   ),
-                                )
+                                )                       
                               : Expanded(
-                                  child: Text(
-                                    songNames[songNameindex],
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                                  child: Row(
+                                    children: [
+                                      QueryArtworkWidget(
+                                        artworkQuality: FilterQuality.high,
+                                        controller: _audioQuery,
+                                        id: ids[songNameindex],
+                                        type: ArtworkType.AUDIO,
+                                        nullArtworkWidget: const Icon(
+                                          Icons.music_note,
+                                          color: Colors.amber,
+                                          size: 30,
+                                        ),
+                                        artworkBorder: BorderRadius.circular(
+                                            30), // Set the desired height // Set the desired aspect ratio
+                                      ),
+                                      const SizedBox(width: 2),
+                                      Expanded(                                   
+                                        child: Marquee(
+                                          text: songNames[songNameindex],
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                          scrollAxis: Axis.horizontal,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          blankSpace: 20.0,
+                                          velocity: 25.0,
+                                          pauseAfterRound:
+                                              const Duration(seconds: 1),
+                                          showFadingOnlyWhenScrolling: true,
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                  
                                 ),
                           const SizedBox(
-                            width: 10,
+                            width: 5,
                           ),
                           IconButton(
                             onPressed: () {
@@ -197,7 +224,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
                             ),
                           ),
                           const SizedBox(
-                            width: 5,
+                            width: 0,
                           ),
                           IconButton(
                             onPressed: () {
