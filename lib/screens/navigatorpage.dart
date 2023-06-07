@@ -115,16 +115,16 @@ class _NavigatorPageState extends State<NavigatorPage> {
                     decoration: const BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(90),
+                        topLeft: Radius.circular(45),
                         topRight: Radius.circular(0),
-                        bottomLeft: Radius.circular(0),
+                        bottomLeft: Radius.circular(5),
                         bottomRight: Radius.circular(0),
                       ),
                     ),
                     child: Padding(
                       //padding: const EdgeInsets.all(8.0),
                       padding: const EdgeInsets.only(
-                        left: 15.0,
+                        left: 08.0,
                         top: 10,
                         bottom: 6,
                         right: 3,

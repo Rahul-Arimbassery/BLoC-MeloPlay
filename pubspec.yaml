@@ -79,6 +79,8 @@ flutter:
       - asset\images\Sangeet Logo.png
       - asset\images\get-started-md.png
       - asset\images\music-band.png
+      
+      
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

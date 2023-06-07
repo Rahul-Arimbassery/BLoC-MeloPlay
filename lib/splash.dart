@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 //import 'package:musicuitest/homepage.dart';
 import 'package:musicuitest/screens/navigatorpage.dart';
-
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key});
@@ -26,29 +26,33 @@ class SplashScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 60),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children:[
+                          children: [
                             Text(
-                              "Play Your Perfect Music",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Color.fromARGB(255, 27, 164, 179),
-                                fontWeight: FontWeight.bold,
+                              'Play Your Perfect Music',
+                              style: GoogleFonts.acme(
+                                textStyle: const TextStyle(
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 27, 164, 179),
+                                  fontWeight: FontWeight.normal,
+                                ),
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 120),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children:[
+                          children: [
                             Text(
-                              "MeloPlay",
-                              style: TextStyle(
-                                fontSize: 60,
-                                color: Color.fromARGB(255, 8, 8, 8),
-                                fontWeight: FontWeight.bold,
+                              'MeloPlay',
+                              style: GoogleFonts.acme(
+                                textStyle: const TextStyle(
+                                  fontSize: 60,
+                                  color: Color.fromARGB(255, 8, 8, 8),
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                             ),
                           ],

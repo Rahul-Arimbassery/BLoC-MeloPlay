@@ -6,10 +6,10 @@ import 'package:musicuitest/globalpage.dart';
 import 'package:musicuitest/screens/nowplaying.dart';
 import 'package:musicuitest/screens/playlistpage.dart';
 import 'package:musicuitest/widgets/addtoplaylist.dart';
+import 'package:musicuitest/widgets/searchpage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'models/allsongs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 late List<bool> _isPressedList;
 int playlistIndex = 0;
@@ -87,6 +87,12 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.search),
               color: Colors.white,
               onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchPage(songNames: songNames, ids:ids,),
+                  ),
+                );
                 // Implement your search functionality here
               },
             ),

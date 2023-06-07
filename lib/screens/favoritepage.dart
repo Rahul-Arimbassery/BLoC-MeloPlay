@@ -58,7 +58,7 @@ class _FavoritePageState extends State<FavoritePage> {
           ],
           center: Alignment.topLeft,
           radius: 1.2,
-        )),
+        ),),
         child: indexes.isEmpty
             ? Center(
                 child: Text(

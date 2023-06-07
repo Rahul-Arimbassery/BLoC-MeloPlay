@@ -5,11 +5,14 @@ import 'package:musicuitest/screens/navigatorpage.dart';
 import 'package:musicuitest/screens/recentpage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import 'mostplayed.dart';
+
 AssetsAudioPlayer _audioPlayer = AssetsAudioPlayer();
 bool isPlaying = false;
 late int index1;
 final OnAudioQuery _audioQuery = OnAudioQuery();
 List<int> recentArray = [];
+List<int> mostPlayedsongID = [];
 
 void playMusic1() {
   if (isPlaying) {
@@ -30,6 +33,9 @@ void skipNext1() async {
     await saveRecentArray();
   }
 
+  mostPlayedsongID.add(index1 + 1); // for most played page
+  //await saveMostPlayedSongs();
+
   _audioPlayer.stop();
   await _audioPlayer.open(
     Audio.file(allfilePaths[index1 + 1]),
@@ -48,6 +54,10 @@ void skipPrevious1() async {
     recentArray.insert(0, index1); // Add the new item at index 0
     await saveRecentArray();
   }
+
+  mostPlayedsongID.add(index1);
+  //await saveMostPlayedSongs();
+
   songNameindex = index1;
   _audioPlayer.stop();
   await _audioPlayer.open(
@@ -98,6 +108,9 @@ class _NowPlayingState extends State<NowPlaying> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 253, 250, 250),
       appBar: AppBar(
@@ -128,8 +141,10 @@ class _NowPlayingState extends State<NowPlaying> {
         title: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
-            width: 200,
-            height: 40,
+            // width: 200,
+            // height: 40,
+            width: screenWidth * 0.9,
+            height: screenHeight * 0.7,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               gradient: const RadialGradient(
@@ -189,10 +204,6 @@ class _NowPlayingState extends State<NowPlaying> {
                     ),
                     child: Column(
                       children: [
-                        // Image.asset(
-                        //   "asset/images/music-band.png",
-                        //   width: 250,
-                        // ),
                         Padding(
                           padding: const EdgeInsets.only(top: 35.0),
                           child: SizedBox(
@@ -558,6 +569,9 @@ class _NowPlayingState extends State<NowPlaying> {
       recentArray.insert(0, widget.index); // Add the new item at index 0
       await saveRecentArray();
     }
+
+    mostPlayedsongID.add(widget.index); // for most played page
+    //await saveMostPlayedSongs();
 
     currentindex = widget.index;
     String filePath = allfilePaths[currentindex];

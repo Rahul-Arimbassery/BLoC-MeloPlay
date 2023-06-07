@@ -26,7 +26,7 @@ class _RecentPageState extends State<RecentPage> {
   }
 
   initialize() async {
-    await loadRecentArray();
+    await loadRecentArray(); 
   }
 
   Future<void> loadRecentArray() async {
@@ -38,10 +38,49 @@ class _RecentPageState extends State<RecentPage> {
     });
   }
 
+  void _clearRecentSongs() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Clear Recent Songs'),
+          content:
+              const Text('Are you sure you want to clear the recent songs?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  recentArray.clear();
+                });
+                saveRecentArray();
+                Navigator.pop(context);
+              },
+              child: const Text('Clear'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              _clearRecentSongs();
+            },
+            icon: const Icon(Icons.clear_all_rounded),
+          )
+        ],
         shadowColor: const Color.fromARGB(255, 27, 164, 179),
         elevation: 10,
         backgroundColor: Colors.black,
@@ -54,12 +93,32 @@ class _RecentPageState extends State<RecentPage> {
         ),
       ),
       body: Container(
+        decoration: const BoxDecoration(
+          gradient: RadialGradient(
+            colors: [
+              Color.fromARGB(255, 61, 61, 58),
+              Color.fromARGB(255, 254, 254, 253),
+            ],
+            center: Alignment.topLeft,
+            radius: 1.2,
+          ),
+        ),
         child: _buildListView(),
       ),
     );
   }
 
   Widget _buildListView() {
+    if (recentArray.isEmpty) {
+      return Center(
+        child: Text(
+          'No Recent Items',
+          style: GoogleFonts.acme(
+            textStyle: const TextStyle(fontSize: 20),
+          ),
+        ),
+      );
+    }
     return Column(
       children: [
         Expanded(
@@ -129,7 +188,7 @@ class _RecentPageState extends State<RecentPage> {
                                     icon: const Icon(
                                       Icons.play_arrow,
                                       size: 30,
-                                      color: Colors.amber,
+                                      color: Color.fromARGB(255, 27, 164, 179),
                                     ),
                                   )
                                 ],
