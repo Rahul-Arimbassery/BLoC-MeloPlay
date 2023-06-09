@@ -116,7 +116,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
             indexesPlaylist.add(playlistIndex);
             playlistNames.add(playlistNames[index]);
             press[index] = false;
-            //press[index] = !press[index];
           });
 
           Fluttertoast.showToast(
@@ -170,7 +169,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
   void _showEditPlaylistDialog(int index) async {
     final playlistBox = Hive.box<Playlist>('playlists');
     String updatedName = playlistNames[index];
-
     showDialog(
       context: context,
       builder: (BuildContext context) {

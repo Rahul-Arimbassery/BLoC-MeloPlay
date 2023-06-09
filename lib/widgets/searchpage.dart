@@ -28,7 +28,7 @@ class _SearchPageState extends State<SearchPage> {
     filteredIds = widget.ids; // Initialize filtered IDs with all IDs
   }
 
-  // Implement search logic and update the filteredSongNames and filteredIds lists accordingly
+  // Implement search logic and update the filteredSongNames and filteredIds lists
   void search(String query) {
     setState(() {
       filteredSongNames = widget.songNames

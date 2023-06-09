@@ -11,11 +11,11 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'models/allsongs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-late List<bool> _isPressedList;
 int playlistIndex = 0;
 final OnAudioQuery _audioQuery = OnAudioQuery();
 SharedPreferences? _prefs;
 List<int> recentList = [];
+late List<bool> _isPressedList;
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -90,7 +90,10 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SearchPage(songNames: songNames, ids:ids,),
+                    builder: (context) => SearchPage(
+                      songNames: songNames,
+                      ids: ids,
+                    ),
                   ),
                 );
                 // Implement your search functionality here
@@ -269,15 +272,7 @@ class _HomePageState extends State<HomePage> {
                                         press[index] = true;
                                       });
                                       if (_isPressedList[index]) {
-                                        //addtoFavoritedb(index);
                                         addtoFavoritedb(index);
-                                        Fluttertoast.showToast(
-                                          msg: 'Song Added to Favorites',
-                                          backgroundColor: const Color.fromARGB(
-                                              255, 27, 164, 179),
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                        );
                                       } else {
                                         deleteSongFromFavorite(index);
                                         Fluttertoast.showToast(
@@ -426,24 +421,8 @@ class _HomePageState extends State<HomePage> {
                                         if (_isPressedList[index]) {
                                           //addtoFavoritedb(index);
                                           addtoFavoritedb(index);
-                                          Fluttertoast.showToast(
-                                            msg: 'Song Added to Favorites',
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 27, 164, 179),
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.BOTTOM,
-                                          );
                                         } else {
                                           deleteSongFromFavorite(index);
-                                          Fluttertoast.showToast(
-                                            msg: 'Song Removed from Favorites',
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 27, 164, 179),
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.BOTTOM,
-                                          );
                                         }
                                         // Save the button state to shared preferences
                                         _prefs?.setBool('buttonState$index',
@@ -500,9 +479,9 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-addtoFavoritedb(int index) async {
-  var favorite = await Hive.openBox<AllSongs>('allSongs');
-  favorite.add(AllSongs(songID: index));
+favFunction(int index) {
+  _isPressedList[index] = !_isPressedList[index];
+  _prefs?.setBool('buttonState$index', _isPressedList[index]);
 }
 
 void removeFromFavoritedb(int index) async {
@@ -523,8 +502,28 @@ Future<void> deleteSongFromFavorite(int songID) async {
   }
 }
 
-// addtoRecent(int index) async {
-//   //recentList.add(index);
-//   var recent = await Hive.openBox<Recentsongs>('recent');
-//   recent.add(Recentsongs(songIndex: index));
-// }
+addtoFavoritedb(int index) async {
+  var favorite = await Hive.openBox<AllSongs>('allSongs'); 
+  if (favorite.values.any((song) => song.songID == index)) {
+    Fluttertoast.showToast(
+      msg: 'Song is already present in the favorite List',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: const Color.fromARGB(255, 199, 52, 29),
+      textColor: Colors.white,
+    );
+  } else {
+    favorite.add(AllSongs(songID: index));
+    Fluttertoast.showToast(
+      msg: 'Song added to the favorite Sucessfully!!',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: const Color.fromARGB(255, 27, 164, 179),
+      textColor: Colors.white,
+    );
+    if (songPresent == 1) {
+      favFunction(index);
+      songPresent = 0;
+    }
+  }
+}

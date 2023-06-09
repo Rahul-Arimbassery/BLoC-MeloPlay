@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:musicuitest/globalpage.dart';
 import 'package:musicuitest/screens/navigatorpage.dart';
+import 'package:musicuitest/screens/playlistpage.dart';
 import 'package:musicuitest/screens/recentpage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-
-import 'mostplayed.dart';
+import '../homepage.dart';
 
 AssetsAudioPlayer _audioPlayer = AssetsAudioPlayer();
 bool isPlaying = false;
@@ -13,6 +13,8 @@ late int index1;
 final OnAudioQuery _audioQuery = OnAudioQuery();
 List<int> recentArray = [];
 List<int> mostPlayedsongID = [];
+int fav = 0;
+int songPresent = 0;
 
 void playMusic1() {
   if (isPlaying) {
@@ -83,11 +85,13 @@ class _NowPlayingState extends State<NowPlaying> {
   int currentTrackIndex = 0;
 
   bool isRepeatEnabled = false;
+  bool isShuffleEnabled = false;
   Color repeatButtonColor = Colors.black;
   bool skipPreviousEnabled = false;
   bool normal = false;
   late int nameIndex;
   bool isManualNextOrPrevious = false;
+  bool showTextButtons = false;
 
   Duration _currentDuration = Duration.zero;
 
@@ -141,8 +145,6 @@ class _NowPlayingState extends State<NowPlaying> {
         title: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
-            // width: 200,
-            // height: 40,
             width: screenWidth * 0.9,
             height: screenHeight * 0.7,
             decoration: BoxDecoration(
@@ -156,15 +158,78 @@ class _NowPlayingState extends State<NowPlaying> {
                 radius: 5,
               ),
             ),
-            child: const Row(
+            child: Row(
               children: [
-                SizedBox(width: 45),
-                Text(
+                const SizedBox(width: 45),
+                const Text(
                   "Now Playing",
                   style: TextStyle(
                     color: Color.fromARGB(255, 27, 164, 179),
                   ),
                 ),
+                const SizedBox(width: 50),
+                PopupMenuButton<String>(
+                  icon: const Icon(
+                    Icons.align_vertical_bottom,
+                    size: 18,
+                  ),
+                  onSelected: (value) {
+                    if (value == 'favorite') {
+                      songPresent = 1;
+                      // Add your first button functionality here
+                      addtoFavoritedb(widget.index);
+                      //favFunction(widget.index);
+                    } else if (value == 'playlist') {
+                      // Add your second button functionality here
+                      playlistIndex = widget.index; //for playlist add
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PlaylistPage(),
+                        ),
+                      );
+                    }
+                  },
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(60),
+                    ),
+                  ),
+                  //color: const Color.fromARGB(255, 27, 164, 179),
+                  color: Colors.white,
+                  itemBuilder: (BuildContext context) {
+                    return <PopupMenuEntry<String>>[
+                      const PopupMenuItem<String>(
+                        value: 'favorite',
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            'Add to Favorite',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'playlist',
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            'Add to Playlist',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ];
+                  },
+                )
               ],
             ),
           ),
@@ -187,7 +252,7 @@ class _NowPlayingState extends State<NowPlaying> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.only(top: 30.0, left: 25, right: 25),
+                      const EdgeInsets.only(top: 40.0, left: 25, right: 25),
                   child: Container(
                     width: 310,
                     height: 330,
@@ -440,10 +505,12 @@ class _NowPlayingState extends State<NowPlaying> {
                         height: 40,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(40),
-                          color: const Color.fromARGB(255, 239, 234, 234),
+                          color: isShuffleEnabled
+                              ? const Color.fromARGB(255, 27, 164, 179)
+                              : const Color.fromARGB(255, 239, 234, 234),
                         ),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: toggleshuffle,
                           icon: const Icon(
                             Icons.shuffle,
                             color: Colors.black,
@@ -456,62 +523,6 @@ class _NowPlayingState extends State<NowPlaying> {
                   const SizedBox(
                     width: 20,
                   ),
-                  // Column(
-                  //   children: [
-                  //     Container(
-                  //       width: 40,
-                  //       height: 40,
-                  //       decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.circular(40),
-                  //         color: const Color.fromARGB(255, 239, 234, 234),
-                  //       ),
-                  //       // child: IconButton(
-                  //       //   onPressed: () {},
-                  //       //   icon: const Icon(
-                  //       //     Icons.favorite,
-                  //       //     color: Colors.black,
-                  //       //     size: 20,
-                  //       //   ),
-                  //       // ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // const SizedBox(
-                  //   width: 35,
-                  //),
-                  // Column(
-                  //   children: [
-                  //     Container(
-                  //       width: 40,
-                  //       height: 40,
-                  //       decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.circular(40),
-                  //         color: const Color.fromARGB(255, 239, 234, 234),
-                  //       ),
-                  //       child: IconButton(
-                  //         onPressed: () {
-                  //           playlistIndex = widget.index; //for playlist add
-                  //           Navigator.push(
-                  //             context,
-                  //             MaterialPageRoute(
-                  //               builder: (context) => const PlaylistPage(),
-                  //             ),
-                  //           );
-                  //           Fluttertoast.showToast(
-                  //             msg: 'Select playlist to add song',
-                  //             backgroundColor:
-                  //                 const Color.fromARGB(255, 27, 164, 179),
-                  //           );
-                  //         },
-                  //         icon: const Icon(
-                  //           Icons.playlist_add,
-                  //           color: Colors.black,
-                  //           size: 20,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                   const SizedBox(
                     width: 35,
                   ),
@@ -557,11 +568,14 @@ class _NowPlayingState extends State<NowPlaying> {
     });
   }
 
-  void openMusic() async {
-    // if (!recentArray.contains(widget.index)) {
-    //   recentArray.add(widget.index);
-    // }
+  void toggleshuffle() {
+    setState(() {
+      isShuffleEnabled = !isShuffleEnabled;
+      repeatButtonColor = isShuffleEnabled ? Colors.blue : Colors.black;
+    });
+  }
 
+  void openMusic() async {
     if (!recentArray.contains(widget.index)) {
       if (recentArray.length >= 5) {
         recentArray.removeLast(); // Remove the oldest item
