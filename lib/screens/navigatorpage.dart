@@ -31,7 +31,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
     const RecentPage(), // Add your recent page widget here
     const PlaylistPage(), // Add your playlist page widget here
     const MostPlayedPage(), // Add your most played page widget here
-    const SettingsPage(), // Add your settings page widget here
+    //const SettingsPage(), // Add your settings page widget here
   ];
 
   int _currentIndex = 0;
@@ -69,31 +69,73 @@ class _NavigatorPageState extends State<NavigatorPage> {
                 ),
               ),
             ),
+            // Positioned(
+            //   //left: 130,  //for mobile
+            //   left: 180, //for emulator
+            //   right: 0,
+            //   top: 10,
+            //   child: Container(
+            //     height: 55,
+            //     decoration: const BoxDecoration(
+            //       color: Color.fromARGB(255, 5, 5, 5),
+            //       borderRadius: BorderRadius.only(
+            //         topLeft: Radius.circular(30),
+            //         topRight: Radius.circular(30),
+            //       ),
+            //     ),
+            //     child: const Center(
+            //       child: Text(
+            //         '🪘  🪕  🎸  🎶  🎷  🎺',
+            //         style: TextStyle(
+            //             fontSize: 12,
+            //             color: Color.fromARGB(255, 6, 6, 6),
+            //             fontWeight: FontWeight.bold),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+
             Positioned(
               //left: 130,  //for mobile
-              left: 180, //for emulator
-              right: 0,
+              left: 170, //for emulator
+              right: 10,
               top: 10,
-              child: Container(
-                height: 55,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 5, 5, 5),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                ),
-                child: const Center(
-                  child: Text(
-                    '🪘  🪕  🎸  🎶  🎷  🎺',
-                    style: TextStyle(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Center(
+                    child: Text(
+                      '🪘  🪕  🎸  🪘  🎷  🎺',
+                      style: TextStyle(
                         fontSize: 12,
                         color: Color.fromARGB(255, 6, 6, 6),
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Color.fromARGB(255, 191, 195, 188),
+                      size: 22,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        // _currentIndex = 5;
+                        // pagestatus = true;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsPage(),
+                          ),
+                        );
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
+
             Positioned.fill(
               top: 55,
               child: _pages[_currentIndex],
@@ -141,7 +183,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
                                     fontSize: 8,
                                     color: Colors.white,
                                   ),
-                                )                       
+                                )
                               : Expanded(
                                   child: Row(
                                     children: [
@@ -159,7 +201,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
                                             30), // Set the desired height // Set the desired aspect ratio
                                       ),
                                       const SizedBox(width: 2),
-                                      Expanded(                                   
+                                      Expanded(
                                         child: Marquee(
                                           text: songNames[songNameindex],
                                           style: const TextStyle(
@@ -179,7 +221,6 @@ class _NavigatorPageState extends State<NavigatorPage> {
                                       ),
                                     ],
                                   ),
-                                  
                                 ),
                           const SizedBox(
                             width: 5,
@@ -280,10 +321,10 @@ class _NavigatorPageState extends State<NavigatorPage> {
             icon: Icon(Icons.play_circle_rounded),
             label: 'Most Played',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
+          // BottomNavigationBarItem(
+          //   //icon: Icon(Icons.settings),
+          //   //label: 'Settings',
+          // ),
         ],
       ),
     );

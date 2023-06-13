@@ -3,8 +3,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:musicuitest/globalpage.dart';
-import 'package:musicuitest/homepage.dart';
-import 'package:musicuitest/screens/navigatorpage.dart';
 import 'package:musicuitest/widgets/addtoplaylist.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 

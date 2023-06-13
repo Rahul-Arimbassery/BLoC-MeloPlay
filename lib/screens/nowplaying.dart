@@ -15,6 +15,7 @@ List<int> recentArray = [];
 List<int> mostPlayedsongID = [];
 int fav = 0;
 int songPresent = 0;
+bool isManualNextOrPrevious = false;
 
 void playMusic1() {
   if (isPlaying) {
@@ -27,13 +28,14 @@ void playMusic1() {
 }
 
 void skipNext1() async {
-  if (!recentArray.contains(index1 + 1)) {
-    if (recentArray.length >= 5) {
-      recentArray.removeLast(); // Remove the oldest item
-    }
-    recentArray.insert(0, index1 + 1); // Add the new item at index 0
-    await saveRecentArray();
+  if (recentArray.contains(index1 + 1)) {
+    recentArray.remove(index1 + 1); // Remove the existing occurrence
   }
+  if (recentArray.length >= 10) {
+    recentArray.removeLast(); // Remove the oldest item
+  }
+  recentArray.insert(0, index1 + 1); // Add the new item at index 0
+  await saveRecentArray();
 
   mostPlayedsongID.add(index1 + 1); // for most played page
   //await saveMostPlayedSongs();
@@ -49,16 +51,16 @@ void skipNext1() async {
 
 void skipPrevious1() async {
   index1--;
-  if (!recentArray.contains(index1)) {
-    if (recentArray.length >= 5) {
-      recentArray.removeLast(); // Remove the oldest item
-    }
-    recentArray.insert(0, index1); // Add the new item at index 0
-    await saveRecentArray();
+  if (recentArray.contains(index1)) {
+    recentArray.remove(index1); // Remove the existing occurrence
   }
+  if (recentArray.length >= 10) {
+    recentArray.removeLast(); // Remove the oldest item
+  }
+  recentArray.insert(0, index1); // Add the new item at index 0
+  await saveRecentArray();
 
   mostPlayedsongID.add(index1);
-  //await saveMostPlayedSongs();
 
   songNameindex = index1;
   _audioPlayer.stop();
@@ -90,7 +92,6 @@ class _NowPlayingState extends State<NowPlaying> {
   bool skipPreviousEnabled = false;
   bool normal = false;
   late int nameIndex;
-  bool isManualNextOrPrevious = false;
   bool showTextButtons = false;
 
   Duration _currentDuration = Duration.zero;
@@ -195,7 +196,6 @@ class _NowPlayingState extends State<NowPlaying> {
                       topLeft: Radius.circular(60),
                     ),
                   ),
-                  //color: const Color.fromARGB(255, 27, 164, 179),
                   color: Colors.white,
                   itemBuilder: (BuildContext context) {
                     return <PopupMenuEntry<String>>[
@@ -229,7 +229,7 @@ class _NowPlayingState extends State<NowPlaying> {
                       ),
                     ];
                   },
-                )
+                ),
               ],
             ),
           ),
@@ -292,6 +292,7 @@ class _NowPlayingState extends State<NowPlaying> {
                         const SizedBox(height: 20),
                         Text(
                           songNames[widget.index],
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -299,7 +300,8 @@ class _NowPlayingState extends State<NowPlaying> {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          artistNames[widget.index]!,
+                          artistNames[widget.index] ?? "No Artist",
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -533,7 +535,6 @@ class _NowPlayingState extends State<NowPlaying> {
                         height: 40,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(40),
-                          //color: const Color.fromARGB(255, 239, 234, 234),
                           color: isRepeatEnabled
                               ? const Color.fromARGB(255, 27, 164, 179)
                               : const Color.fromARGB(255, 239, 234, 234),
@@ -576,13 +577,14 @@ class _NowPlayingState extends State<NowPlaying> {
   }
 
   void openMusic() async {
-    if (!recentArray.contains(widget.index)) {
-      if (recentArray.length >= 5) {
-        recentArray.removeLast(); // Remove the oldest item
-      }
-      recentArray.insert(0, widget.index); // Add the new item at index 0
-      await saveRecentArray();
+    if (recentArray.contains(widget.index)) {
+      recentArray.remove(widget.index); // Remove the existing occurrence
     }
+    if (recentArray.length >= 10) {
+      recentArray.removeLast(); // Remove the oldest item
+    }
+    recentArray.insert(0, widget.index); // Add the new item at index 0
+    await saveRecentArray();
 
     mostPlayedsongID.add(widget.index); // for most played page
     //await saveMostPlayedSongs();
@@ -598,12 +600,18 @@ class _NowPlayingState extends State<NowPlaying> {
     });
 
     _audioPlayer.playlistAudioFinished.listen((Playing playing) {
-      if (!isManualNextOrPrevious) {
-        nextMusic();
+      if (!isRepeatEnabled) {
+        if (isManualNextOrPrevious == false) {
+          nextMusic();
+        }
       } else {
-        isManualNextOrPrevious =
-            false; // Reset the flag after manual next/previous
+        openMusic();
       }
+    });
+
+    setState(() {
+      // Set isPlaying to true when opening the music
+      isManualNextOrPrevious = false;
     });
   }
 
@@ -620,21 +628,39 @@ class _NowPlayingState extends State<NowPlaying> {
 
   void skipNext() async {
     _audioPlayer.stop();
-    widget.index++;
+
+    if (widget.index < songNames.length - 1) {
+      widget.index++;
+    } else {
+      // Reached the end of the playlist
+      widget.index = 0; // Move to the first song
+    }
+
     setState(() {
+      isRepeatEnabled = false;
       isPlaying = false;
       isManualNextOrPrevious = true; // Set the flag for manual next/previous
     });
+
     openMusic();
   }
 
   void skipPrevious() async {
     _audioPlayer.stop();
-    widget.index--;
+
+    if (widget.index > 0) {
+      widget.index--;
+    } else {
+      // Reached the start of the playlist
+      widget.index = songNames.length - 1; // Move to the last song
+    }
+
     setState(() {
+      isRepeatEnabled = false;
       isPlaying = false;
       isManualNextOrPrevious = true; // Set the flag for manual next/previous
     });
+
     openMusic();
   }
 
@@ -649,7 +675,6 @@ class _NowPlayingState extends State<NowPlaying> {
       Audio.file(filePath),
       autoStart: true,
     );
-    widget.index--;
   }
 
   void seekForward() {

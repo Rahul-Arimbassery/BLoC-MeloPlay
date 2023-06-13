@@ -13,7 +13,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         shadowColor: const Color.fromARGB(255, 27, 164, 179),
         elevation: 10,
         backgroundColor: Colors.black,

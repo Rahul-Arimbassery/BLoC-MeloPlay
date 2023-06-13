@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:musicuitest/homepage.dart';
+import 'package:musicuitest/screens/navigatorpage.dart';
+import 'package:musicuitest/screens/playlistpage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../globalpage.dart';
@@ -28,6 +31,12 @@ class _SearchPageState extends State<SearchPage> {
     filteredIds = widget.ids; // Initialize filtered IDs with all IDs
   }
 
+  @override
+  void dispose() {
+    FocusScope.of(context).unfocus();
+    super.dispose();
+  }
+
   // Implement search logic and update the filteredSongNames and filteredIds lists
   void search(String query) {
     setState(() {
@@ -46,6 +55,17 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NavigatorPage(),
+              ),
+            );
+          },
+        ),
         title: TextField(
           onChanged: search,
           decoration: const InputDecoration(
@@ -90,7 +110,7 @@ class _SearchPageState extends State<SearchPage> {
                     width: double
                         .infinity, // set the width to match the parent ListView
                     child: InkWell(
-                      onTap: () {
+                      onTap: () async {
                         FocusScope.of(context).unfocus();
                         Navigator.push(
                           context,
@@ -124,6 +144,69 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                           tileColor: const Color.fromARGB(255, 250, 250,
                               251), // set the background color based on the view mode
+                          trailing: PopupMenuButton<String>(
+                            icon: const Icon(
+                              Icons.align_vertical_bottom,
+                              size: 18,
+                              color: Color.fromARGB(255, 27, 164, 179),
+                            ),
+                            onSelected: (value) {
+                              if (value == 'favorite') {
+                                songPresent = 1;
+                                // Add your first button functionality here
+                                addtoFavoritedb(index);
+                                //favFunction(widget.index);
+                              } else if (value == 'playlist') {
+                                // Add your second button functionality here
+                                playlistIndex = index; //for playlist add
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const PlaylistPage(),
+                                  ),
+                                );
+                              }
+                            },
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(60),
+                              ),
+                            ),
+                            //color: const Color.fromARGB(255, 27, 164, 179),
+                            color: Colors.white,
+                            itemBuilder: (BuildContext context) {
+                              return <PopupMenuEntry<String>>[
+                                const PopupMenuItem<String>(
+                                  value: 'favorite',
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Text(
+                                      'Add to Favorite',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'playlist',
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Text(
+                                      'Add to Playlist',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ];
+                            },
+                          ),
                         ),
                       ),
                     ),

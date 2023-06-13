@@ -9,7 +9,6 @@ import '../models/playlistnamearray.dart';
 
 final OnAudioQuery _audioQuery = OnAudioQuery();
 List<int> globalcurrentIndexarray = [];
-//List<bool> press = List.generate(100, (index) => true);
 List<bool> press = List.generate(100, (index) => false);
 List<int> indexesPlaylist1 = [];
 
@@ -106,7 +105,7 @@ class _AddtoPlaylistState extends State<AddtoPlaylist> {
                                         press[index] = !press[index];
                                       });
                                       //if (!press[index]) {
-                                        if (press[index]) {
+                                      if (press[index]) {
                                         await addSongs(index);
                                       } else {
                                         await removeSongs(index);
@@ -138,24 +137,6 @@ class _AddtoPlaylistState extends State<AddtoPlaylist> {
     );
   }
 
-  // addSongs(int index) async {
-  //   var box1 = await Hive.openBox<Playlistarray>('playlistsarray');
-  //   var playlistArray1 = box1.get(globalplaylistName);
-  //   indexesPlaylist1 = playlistArray1!.playlistIndexarray;
-
-  //   setState(() {
-  //     indexesPlaylist1.add(index);
-  //     currentIndexarray.add(index);
-  //   });
-
-  //   var box = await Hive.openBox<Playlistarray>('playlistsarray');
-  //   var playlistArray = Playlistarray(
-  //     playlistName: globalplaylistName,
-  //     playlistIndexarray: indexesPlaylist1,
-  //   );
-  //   await box.put(playlistArray.playlistName, playlistArray);
-  // }
-
   Future<void> addSongs(int index) async {
     var box1 = await Hive.openBox<Playlistarray>('playlistsarray');
     var playlistArray1 = box1.get(globalplaylistName);
@@ -171,7 +152,6 @@ class _AddtoPlaylistState extends State<AddtoPlaylist> {
       var playlistArray = Playlistarray(
         playlistName: globalplaylistName,
         playlistIndexarray: indexesPlaylist1,
-        
       );
       await box.put(playlistArray.playlistName, playlistArray);
 
@@ -203,10 +183,5 @@ class _AddtoPlaylistState extends State<AddtoPlaylist> {
       playlistIndexarray: indexesPlaylist1,
     );
     await box.put(playlistArray.playlistName, playlistArray);
-    // setState(() {
-    //   currentIndexarray.add(index);
-    //   //press[index] = false;
-    // });
-    //await readplaylistDB();
   }
 }

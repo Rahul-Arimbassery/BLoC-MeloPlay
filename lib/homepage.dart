@@ -355,8 +355,6 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(15.0),
                   child: InkWell(
                     onTap: () {
-                      //_audioPlayer.stop();
-                      //Play using a miniplayer
                       Navigator.push(
                         context,
                         MaterialPageRoute(
