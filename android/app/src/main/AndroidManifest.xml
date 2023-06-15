@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
    <application
-        android:label="musicuitest"
+        android:label="MeloPlay"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
