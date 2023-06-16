@@ -294,7 +294,10 @@ class _NavigatorPageState extends State<NavigatorPage> {
         onTap: (int index) {
           setState(() {
             _currentIndex = index;
-            pagestatus = true;
+            pagestatus = false;
+            if (_currentIndex == 3) {
+              pagestatus = true;
+            }
           });
         },
         //backgroundColor: Colors.black,

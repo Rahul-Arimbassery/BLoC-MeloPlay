@@ -31,12 +31,6 @@ class _SearchPageState extends State<SearchPage> {
     filteredIds = widget.ids; // Initialize filtered IDs with all IDs
   }
 
-  @override
-  void dispose() {
-    FocusScope.of(context).unfocus();
-    super.dispose();
-  }
-
   // Implement search logic and update the filteredSongNames and filteredIds lists
   void search(String query) {
     setState(() {

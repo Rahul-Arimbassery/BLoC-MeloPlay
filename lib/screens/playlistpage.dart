@@ -105,10 +105,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
   }
 
   Future<void> openPlaylist(int index) async {
-    var box = await Hive.openBox<Playlistarray>('playlistsarray');
-    var playlistArray = box.get(playlistNames[index]);
-    indexesPlaylist = playlistArray!.playlistIndexarray;
-
     if (!deletePressed) {
       if (pagestatus != true) {
         if (!indexesPlaylist.contains(playlistIndex)) {
@@ -256,18 +252,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
     return Scaffold(
       appBar: AppBar(
         //automaticallyImplyLeading: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            pagestatus = false;
-            Navigator.push<int>(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const NavigatorPage(),
-              ),
-            );
-          },
-        ),
         shadowColor: const Color.fromARGB(255, 27, 164, 179),
         elevation: 10,
         backgroundColor: Colors.black,
@@ -283,7 +267,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
               ),
               const SizedBox(width: 90),
               const Text(
-                'CREATE\nYour list',
+                'CREATE',
                 style: TextStyle(
                   color: Color.fromARGB(255, 27, 164, 179),
                   fontSize: 11.5,
