@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:musicuitest/splash.dart';
+import 'package:musicuitest/bloc/navigator/bloc/navigator_bloc_bloc.dart';
+import 'package:musicuitest/presentation/screens/splash/splash.dart';
 import 'models/allsongs.dart';
 import 'models/playlist.dart';
 import 'models/playlistnamearray.dart';
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const SplashScreen(),
+      home: SplashScreen(),
       theme: ThemeData(
         primaryColor: const Color.fromARGB(255, 250, 250, 251),
       ),

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-import 'package:musicuitest/globalpage.dart';
-import 'package:musicuitest/screens/nowplaying.dart';
-import 'package:musicuitest/screens/playlistpage.dart';
-import 'package:musicuitest/widgets/addtoplaylist.dart';
-import 'package:musicuitest/widgets/searchpage.dart';
+import 'package:musicuitest/utils/globalpage.dart';
+import 'package:musicuitest/presentation/screens/nowplaying/nowplaying.dart';
+import 'package:musicuitest/presentation/screens/playlist/playlistpage.dart';
+import 'package:musicuitest/presentation/screens/playlist/addtoplaylist.dart';
+import 'package:musicuitest/controller/searchpage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'models/allsongs.dart';
+import '../../../models/allsongs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 int playlistIndex = 0;
@@ -501,7 +501,7 @@ Future<void> deleteSongFromFavorite(int songID) async {
 }
 
 addtoFavoritedb(int index) async {
-  var favorite = await Hive.openBox<AllSongs>('allSongs'); 
+  var favorite = await Hive.openBox<AllSongs>('allSongs');
   if (favorite.values.any((song) => song.songID == index)) {
     Fluttertoast.showToast(
       msg: 'Song is already present in the favorite List',

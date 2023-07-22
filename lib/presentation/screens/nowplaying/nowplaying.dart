@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:musicuitest/globalpage.dart';
-import 'package:musicuitest/screens/navigatorpage.dart';
-import 'package:musicuitest/screens/playlistpage.dart';
-import 'package:musicuitest/screens/recentpage.dart';
+import 'package:musicuitest/utils/globalpage.dart';
+import 'package:musicuitest/presentation/screens/navigator/navigatorpage.dart';
+import 'package:musicuitest/presentation/screens/playlist/playlistpage.dart';
+import 'package:musicuitest/presentation/screens/recent/recentpage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import '../homepage.dart';
+import '../home/homepage.dart';
 
 AssetsAudioPlayer _audioPlayer = AssetsAudioPlayer();
 bool isPlaying = false;
@@ -135,7 +135,7 @@ class _NowPlayingState extends State<NowPlaying> {
             final result = await Navigator.push<int>(
               context,
               MaterialPageRoute(
-                builder: (context) => const NavigatorPage(),
+                builder: (context) =>  NavigatorPage(),
               ),
             );
             setState(() {

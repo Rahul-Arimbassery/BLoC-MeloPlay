@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-import 'package:musicuitest/homepage.dart';
-import 'package:musicuitest/screens/navigatorpage.dart';
-import 'package:musicuitest/widgets/playlistitems.dart';
+import 'package:musicuitest/presentation/screens/home/homepage.dart';
+import 'package:musicuitest/presentation/screens/navigator/navigatorpage.dart';
+import 'package:musicuitest/presentation/screens/playlist/playlistitems.dart';
 
-import '../models/playlist.dart';
-import '../models/playlistnamearray.dart';
-import '../widgets/addtoplaylist.dart';
+import '../../../models/playlist.dart';
+import '../../../models/playlistnamearray.dart';
+import 'addtoplaylist.dart';
 
 List<int> indexesPlaylist = [];
 
@@ -132,7 +132,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const NavigatorPage(),
+              builder: (context) =>  NavigatorPage(),
             ),
           );
         } else {
@@ -252,36 +252,47 @@ class _PlaylistPageState extends State<PlaylistPage> {
     return Scaffold(
       appBar: AppBar(
         //automaticallyImplyLeading: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            pagestatus = false;
+            Navigator.push<int>(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>  NavigatorPage(),
+              ),
+            );
+          },
+        ),
         shadowColor: const Color.fromARGB(255, 27, 164, 179),
         elevation: 10,
         backgroundColor: Colors.black,
-        title: Expanded(
-          child: Row(
-            children: [
-              //const Text('PLAYLIST'),
-              Text(
-                'Playlist     ',
-                style: GoogleFonts.acme(
-                  textStyle: const TextStyle(fontSize: 22),
-                ),
+        //removed expanded here c-1
+        title: Row(
+          children: [
+            //const Text('PLAYLIST'),
+            Text(
+              'Playlist     ',
+              style: GoogleFonts.acme(
+                textStyle: const TextStyle(fontSize: 22),
               ),
-              const SizedBox(width: 90),
-              const Text(
-                'CREATE',
-                style: TextStyle(
-                  color: Color.fromARGB(255, 27, 164, 179),
-                  fontSize: 11.5,
-                ),
+            ),
+            const SizedBox(width: 60),
+            const Text(
+              'CREATE',
+              style: TextStyle(
+                color: Color.fromARGB(255, 27, 164, 179),
+                fontSize: 11.5,
               ),
-              IconButton(
-                icon: const Icon(Icons.add_box, size: 35),
-                color: Colors.white,
-                onPressed: () {
-                  showAddPlaylistDialog(); // Show the add playlist dialog
-                },
-              ),
-            ],
-          ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.add_box, size: 35),
+              color: Colors.white,
+              onPressed: () {
+                showAddPlaylistDialog(); // Show the add playlist dialog
+              },
+            ),
+          ],
         ),
       ),
       body: SingleChildScrollView(

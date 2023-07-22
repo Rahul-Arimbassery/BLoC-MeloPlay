@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
-import 'package:musicuitest/globalpage.dart';
-import 'package:musicuitest/widgets/playlistitems.dart';
+import 'package:musicuitest/utils/globalpage.dart';
+import 'package:musicuitest/presentation/screens/playlist/playlistitems.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../models/playlistnamearray.dart';
+import '../../../models/playlistnamearray.dart';
 
 final OnAudioQuery _audioQuery = OnAudioQuery();
 List<int> globalcurrentIndexarray = [];

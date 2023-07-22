@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-import 'package:musicuitest/globalpage.dart';
-import 'package:musicuitest/widgets/addtoplaylist.dart';
+import 'package:musicuitest/utils/globalpage.dart';
+import 'package:musicuitest/presentation/screens/playlist/addtoplaylist.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../models/playlistnamearray.dart';
-import '../screens/nowplaying.dart';
-import '../screens/playlistpage.dart';
+import '../../../models/playlistnamearray.dart';
+import '../nowplaying/nowplaying.dart';
+import 'playlistpage.dart';
 
 final OnAudioQuery _audioQuery = OnAudioQuery();
 List<int> currentIndexarray = [];
